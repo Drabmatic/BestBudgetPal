@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BestBudgetPal | Budget Better, Stress Less</title>
+    <meta name="description" content="BestBudgetPal is a local-first Android budgeting app with fast daily tracking, smart insights, and optional premium tools.">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Sans:wght@400;600&display=swap');
+
+        :root {
+            --bg: #f4f8f4;
+            --surface: #ffffff;
+            --surface-soft: #eaf2eb;
+            --text: #173227;
+            --muted: #436658;
+            --accent: #0a8f6a;
+            --accent-strong: #06684c;
+            --highlight: #f2b84b;
+            --line: #c8dbce;
+            --shadow: 0 16px 40px rgba(12, 64, 43, 0.12);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(circle at 12% 12%, rgba(242, 184, 75, 0.22), transparent 38%),
+                radial-gradient(circle at 88% 0%, rgba(10, 143, 106, 0.22), transparent 34%),
+                linear-gradient(180deg, #eff8f2 0%, #f8fbf8 55%, #eef4ef 100%);
+            min-height: 100vh;
+            line-height: 1.5;
+        }
+
+        .container {
+            width: min(1080px, 92vw);
+            margin: 0 auto;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px 0;
+        }
+
+        .brand {
+            font-family: "Space Grotesk", sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            letter-spacing: 0.02em;
+            color: var(--accent-strong);
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .hero {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 28px;
+            box-shadow: var(--shadow);
+            padding: 52px 46px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            right: -90px;
+            top: -90px;
+            background: radial-gradient(circle, rgba(10, 143, 106, 0.22) 0%, rgba(10, 143, 106, 0) 70%);
+        }
+
+        .badge {
+            display: inline-block;
+            background: var(--surface-soft);
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            padding: 8px 14px;
+            color: var(--accent-strong);
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 18px;
+        }
+
+        h1, h2, h3 {
+            font-family: "Space Grotesk", sans-serif;
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        h1 {
+            font-size: clamp(2rem, 5vw, 3.4rem);
+            max-width: 760px;
+        }
+
+        .hero p {
+            margin: 18px 0 0;
+            max-width: 700px;
+            color: var(--muted);
+            font-size: 1.1rem;
+        }
+
+        .cta-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            text-decoration: none;
+            padding: 12px 18px;
+            border-radius: 12px;
+            font-weight: 600;
+            border: 1px solid transparent;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(10, 143, 106, 0.18);
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #ffffff;
+        }
+
+        .btn-secondary {
+            background: #ffffff;
+            color: var(--accent-strong);
+            border-color: var(--line);
+        }
+
+        .section {
+            padding: 42px 0 12px;
+        }
+
+        .section h2 {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            margin-bottom: 16px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            padding: 18px;
+        }
+
+        .card h3 {
+            font-size: 1.05rem;
+            margin-bottom: 8px;
+        }
+
+        .card p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 0.96rem;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+            margin-top: 12px;
+        }
+
+        .plan {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            padding: 18px;
+        }
+
+        .plan.premium {
+            border-color: #d7b160;
+            background: linear-gradient(180deg, #fff8ea 0%, #fffdf7 100%);
+        }
+
+        .plan ul {
+            margin: 12px 0 0;
+            padding-left: 18px;
+            color: var(--muted);
+        }
+
+        .final-cta {
+            margin: 36px 0 48px;
+            background: linear-gradient(135deg, #0a8f6a 0%, #056a4c 100%);
+            color: #ffffff;
+            border-radius: 20px;
+            padding: 28px;
+        }
+
+        .final-cta p {
+            margin: 10px 0 0;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        footer {
+            padding: 8px 0 32px;
+            color: var(--muted);
+            font-size: 0.92rem;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(16px);
+            animation: reveal 0.65s ease forwards;
+        }
+
+        .delay-1 { animation-delay: 0.08s; }
+        .delay-2 { animation-delay: 0.16s; }
+        .delay-3 { animation-delay: 0.24s; }
+
+        @keyframes reveal {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 900px) {
+            .cards {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 720px) {
+            .hero {
+                padding: 34px 22px;
+                border-radius: 22px;
+            }
+
+            .cards,
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="topbar">
+            <div class="brand">BestBudgetPal</div>
+            <a class="nav-link" href="policy.html">Privacy Policy</a>
+        </header>
+
+        <main>
+            <section class="hero reveal">
+                <span class="badge">Local-first Android budgeting app</span>
+                <h1>Build better money habits with less friction.</h1>
+                <p>BestBudgetPal keeps your daily budget loop simple: track spending, adjust budgets, and see trends quickly. Use free essentials forever, then unlock deeper insights with Premium.</p>
+                <div class="cta-row">
+                    <a class="btn btn-primary" href="https://play.google.com/store/apps/details?id=com.bestbudgetpal">Get it on Google Play</a>
+                    <a class="btn btn-secondary" href="policy.html">Read Privacy Policy</a>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2 class="reveal delay-1">What you can do in minutes</h2>
+                <div class="cards">
+                    <article class="card reveal delay-1">
+                        <h3>Track Transactions Fast</h3>
+                        <p>Add income and expenses, edit quickly, and keep your month updated without a long setup flow.</p>
+                    </article>
+                    <article class="card reveal delay-2">
+                        <h3>Budget by Category</h3>
+                        <p>See overspending early and reallocate funds before the month gets away from you.</p>
+                    </article>
+                    <article class="card reveal delay-3">
+                        <h3>View Real Insights</h3>
+                        <p>Use trend charts and category breakdowns to understand where money is going.</p>
+                    </article>
+                    <article class="card reveal delay-1">
+                        <h3>Import CSV Data</h3>
+                        <p>Bring in statement exports and continue from where you already track spending.</p>
+                    </article>
+                    <article class="card reveal delay-2">
+                        <h3>Manage Bills</h3>
+                        <p>Track recurring bills and reminders so due dates are easier to stay ahead of.</p>
+                    </article>
+                    <article class="card reveal delay-3">
+                        <h3>Keep Control</h3>
+                        <p>Your data is stored locally on your device, with optional analytics support for app quality.</p>
+                    </article>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2 class="reveal delay-1">Free vs Premium</h2>
+                <div class="comparison">
+                    <article class="plan reveal delay-2">
+                        <h3>Free</h3>
+                        <ul>
+                            <li>Manual transaction tracking</li>
+                            <li>Budgets up to 5 categories</li>
+                            <li>Basic charts and reminders</li>
+                            <li>CSV import limited to 1 per month</li>
+                        </ul>
+                    </article>
+                    <article class="plan premium reveal delay-3">
+                        <h3>Premium (Monthly / Yearly)</h3>
+                        <ul>
+                            <li>Unlimited categories and budgets</li>
+                            <li>Unlimited CSV imports</li>
+                            <li>Rollover budgets and advanced insights</li>
+                            <li>Unlimited bills and full data export</li>
+                        </ul>
+                    </article>
+                </div>
+            </section>
+
+            <section class="final-cta reveal delay-2">
+                <h2>Ready to launch your budget routine?</h2>
+                <p>Start with the free version and upgrade only if you need the extra depth.</p>
+                <div class="cta-row">
+                    <a class="btn btn-secondary" href="https://play.google.com/store/apps/details?id=com.bestbudgetpal">Open Play Store Listing</a>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <div>BestBudgetPal</div>
+            <div>App ID: com.bestbudgetpal</div>
+            <div>Policy: <a class="nav-link" href="policy.html">policy.html</a></div>
+        </footer>
+    </div>
+</body>
+</html>
